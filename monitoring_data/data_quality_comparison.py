@@ -112,3 +112,31 @@ plt.grid(True, linestyle='--', alpha=0.2)
 plt.tight_layout()
 plt.savefig('graphs/combined_line_plot_normalized.pdf')
 plt.close()
+
+
+
+#========SERVER LATENCY Experiment=============
+
+# Carregar os dados
+server_latency = pd.read_csv('server_latency_record.csv')
+
+# Converter a coluna de timestamp para datetime
+server_latency['timestamp'] = pd.to_datetime(server_latency['timestamp'])
+
+# Normalizar os valores de latência
+latency_normalized = (server_latency['latency_ms'] - server_latency['latency_ms'].mean()) / server_latency['latency_ms'].std()
+
+# Criar um índice numérico para o eixo x
+index = np.arange(len(server_latency))
+
+# Plotar a série temporal normalizada
+plt.figure(figsize=(14, 5))
+plt.plot(index, latency_normalized, label='Server Latency (Normalized)', alpha=0.7)
+plt.xlabel('Index')
+plt.ylabel('Normalized Latency')
+plt.title('Normalized Server Latency Over Time')
+plt.legend(loc='upper left', bbox_to_anchor=(1, 1), fontsize=14)
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.savefig('graphs/server_latency_plot_normalized.png')
+plt.close()
