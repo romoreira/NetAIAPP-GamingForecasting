@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nome do arquivo CSV
-OUTPUT_FILE="latency_log.csv"
+OUTPUT_FILE="ue_latency_probe_log.csv"
 
 # Cabeçalho do arquivo CSV
 echo "timestamp,latency" > "$OUTPUT_FILE"
@@ -14,4 +14,3 @@ ping -I uesimtun0 20.42.98.166 | while read -r line; do
         echo "$TIMESTAMP,$LATENCY" >> "$OUTPUT_FILE"
     fi
 done
-
