@@ -102,7 +102,7 @@ y_min, y_max = min(sample_y_true_normalized.min(), sample_y_pred_normalized.min(
 plt.ylim(y_min, y_max + 0.4 * (y_max - y_min))  # Adiciona 10% de espaço acima do maior valor
 
 #plt.xlabel('Index')
-plt.ylabel('Normalized Latency', fontsize=16)
+plt.ylabel('Normalized Latency', fontsize=17)
 #plt.title('Real vs Estimated')
 
 # Colocar a legenda dentro do gráfico no canto superior direito
