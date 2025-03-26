@@ -1,0 +1,4 @@
+R² Score: 0.26
+MAPE: 53.97%
+MSE: 1172.64
+MAE Normalizado: 0.22

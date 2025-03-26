@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+from catboost import CatBoostRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 # Verificar se o arquivo CSV já existe
@@ -12,7 +12,6 @@ excel_path = '../planilha_final_jogos_global.xlsx'
 if not os.path.exists(csv_path):
     # Carregar o arquivo Excel e transformar em CSV
     df_subset = pd.read_excel(excel_path)
-    # Salvar como CSV
     df_subset.to_csv(csv_path, index=False)
     print("Arquivo CSV gerado com sucesso.")
 else:
@@ -25,10 +24,8 @@ df = pd.read_csv('../merged_gaming_data.csv')
 # Visualizar as primeiras linhas
 print("Dados carregados:")
 print(df.head())
-print(df.columns)
 
 # Selecionar apenas colunas numéricas relevantes
-# Ajustar de acordo com as colunas úteis no seu dataset
 numeric_columns = ['RTT', 'Length', 'Longitude', 'Latitude']
 df_numeric = df[numeric_columns]
 
@@ -38,12 +35,12 @@ y = df_numeric['RTT']              # Target
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Treinar o modelo
-regressor = RandomForestRegressor(random_state=42)
-regressor.fit(X_train, y_train)
+# Treinar o modelo com CatBoostRegressor
+catboost_model = CatBoostRegressor(verbose=0, random_seed=42)  # verbose=0 para evitar saída longa
+catboost_model.fit(X_train, y_train)
 
 # Fazer previsões
-y_pred = regressor.predict(X_test)
+y_pred = catboost_model.predict(X_test)
 
 # Calcular as métricas
 r2 = r2_score(y_test, y_pred)
@@ -59,10 +56,13 @@ print(f"MSE: {mse:.2f}")
 print(f"MAE Normalizado: {mae_normalizado:.2f}")
 
 
-# Using RF I want to forecast (regression) the RTT of the dataset game
-# The target variable is the RTT
-# The features are the other columns
+# Salvar métricas em um arquivo .txt
+output_path = 'resultados_metricas.txt'
 
-# Separar os dados em features e target
-X = df.drop(columns=['RTT'])
-y = df['RTT']
+with open(output_path, 'w') as f:
+    f.write(f"R² Score: {r2:.2f}\n")
+    f.write(f"MAPE: {mape:.2f}%\n")
+    f.write(f"MSE: {mse:.2f}\n")
+    f.write(f"MAE Normalizado: {mae_normalizado:.2f}\n")
+
+print(f"Métricas salvas em: {output_path}")
