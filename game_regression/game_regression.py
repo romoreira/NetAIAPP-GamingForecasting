@@ -26,3 +26,12 @@ df = pd.read_csv(csv_path)
 # Visualizar as primeiras linhas
 print("Dados carregados:")
 print(df.head())
+print(df.columns())
+
+# Using RF I want to forecast (regression) the RTT of the dataset game
+# The target variable is the RTT
+# The features are the other columns
+
+# Separar os dados em features e target
+X = df.drop(columns=['RTT'])
+y = df['RTT']
